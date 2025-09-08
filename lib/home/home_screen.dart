@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:facebook/home/chat_screen.dart';
 import 'package:facebook/models/chat_user_model.dart';
 import 'package:facebook/models/user_status_model.dart';
@@ -28,8 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
     loadData();
   }
 
-  loadData() {
+  loadData() async {
     isLoading = true;
+      final snapshot = await FirebaseFirestore.instance
+      .collection("chats")   // <- apna Firestore collection name
+      .get();
+
     for (var msg in Dummychat) {
       chatMessageList.add(ChatUserModel.fromJson(msg));
     }
@@ -37,11 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  // final List<Map<String, String>> users = const [
-  //   {"name": "Joshua", "image": "https://i.pravatar.cc/150?img=12"},
-  //   {"name": "Martin", "image": "https://i.pravatar.cc/150?img=30"},
-  //   {"name": "Katherine", "image": "https://i.pravatar.cc/150?img=50"},
-  // ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
             radius: 35,
-            backgroundImage: AssetImage("assets/Oval.png"),
+            backgroundImage: NetworkImage(userData.image),
           ),
         ),
 
-        title: Text("Chats", style: TextStyle(fontSize: 30)),
+        title: Text(userData.name, style: TextStyle(fontSize: 30)),
 
         actions: [
           IconButton(icon: Icon(Icons.camera_alt), onPressed: () {}),
@@ -79,23 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 100, // thoda height bada liya
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: userData.length + 1,
+                itemCount: userData.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 28,
-                          child: Icon(Icons.add, size: 30),
-                        ),
-                        SizedBox(height: 6),
-                        Text("Your Story"),
-                      ],
-                    );
-                  }
-
-                  final user = userData[index - 1];
+                 
+                  final user = userData[index];
                   return InkWell(
                     onTap: () {},
                     child: Column(

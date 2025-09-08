@@ -1,33 +1,33 @@
 class UserModel {
-  final String socialId;
-  final String name;
   final String email;
   final String image;
+  final String name;
+  final String socialId;
 
   UserModel({
-    required this.socialId,
-    required this.name,
     required this.email,
     required this.image,
+    required this.name,
+    required this.socialId,
   });
 
-  // Convert JSON to Dart object
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      socialId: json['socialId'] ?? '',
-      name: json['name'] ?? '',
       email: json['email'] ?? '',
       image: json['image'] ?? '',
+      name: json['name'] ?? '',
+      socialId: json['socialId'] ?? '',
     );
   }
 
-  // Convert Dart object to JSON
+  // Convert Dart object → JSON
   Map<String, dynamic> toJson() {
     return {
-      'socialId': socialId,
-      'name': name,
       'email': email,
       'image': image,
+      'name': name,
+      'socialId': socialId,
     };
   }
 }
