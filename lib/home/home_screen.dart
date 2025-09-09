@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:facebook/home/chat_screen.dart';
 import 'package:facebook/models/chat_user_model.dart';
+import 'package:facebook/models/user_model.dart';
 import 'package:facebook/models/user_status_model.dart';
+import 'package:facebook/utils/sp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_story_view/models/story_item.dart';
@@ -20,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   File? image;
   bool isLoading = true;
+  UserModel? userModel;
 
   final List<ChatUserModel> chatMessageList = [];
 
@@ -30,11 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   loadData() async {
-    isLoading = true;
-      final snapshot = await FirebaseFirestore.instance
-      .collection("chats")   // <- apna Firestore collection name
-      .get();
-
+  
+      userModel =  await SPref().getUserData();
     for (var msg in Dummychat) {
       chatMessageList.add(ChatUserModel.fromJson(msg));
     }
@@ -52,11 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
             radius: 35,
-            backgroundImage: NetworkImage(userData.image),
+            backgroundImage: NetworkImage(userModel!.image),
           ),
         ),
 
-        title: Text(userData.name, style: TextStyle(fontSize: 30)),
+        title: Text(userModel!.name, style: TextStyle(fontSize: 30)),
 
         actions: [
           IconButton(icon: Icon(Icons.camera_alt), onPressed: () {}),
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 10),
-            SizedBox(height: 500, child: buildStory(context)),
+            // SizedBox(height: 500, child: buildStory(context)),
             SizedBox(
               height: 100, // thoda height bada liya
               child: ListView.separated(
@@ -143,31 +143,31 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<StoryItem> storyItems = [
-    StoryItem(
-      type: StoryItemType.image,
-      url: "https://picsum.dev/300/200",
-      duration: 3,
-    ),
-    StoryItem(
-      type: StoryItemType.image,
-      url: "https://picsum.dev/300/200",
-      duration: 3,
-    ),
-    StoryItem(
-      type: StoryItemType.image,
-      url: "https://picsum.dev/300/200",
-      duration: 3,
-    ),
-  ];
+  // List<StoryItem> storyItems = [
+  //   StoryItem(
+  //     type: StoryItemType.image,
+  //     url: "https://picsum.dev/300/200",
+  //     duration: 3,
+  //   ),
+  //   StoryItem(
+  //     type: StoryItemType.image,
+  //     url: "https://picsum.dev/300/200",
+  //     duration: 3,
+  //   ),
+  //   StoryItem(
+  //     type: StoryItemType.image,
+  //     url: "https://picsum.dev/300/200",
+  //     duration: 3,
+  //   ),
+  // ];
 
-  Widget buildStory(context) {
-    return FlutterStoryView(
-      storyItems: storyItems,
-      onPageChanged: (int) {},
-      onComplete: () {},
-    );
-  }
+  // Widget buildStory(context) {
+  //   return FlutterStoryView(
+  //     storyItems: storyItems,
+  //     onPageChanged: (int) {},
+  //     onComplete: () {},
+  //   );
+  // }
 }
 
 // Widget _pickImage(StoryItem data)  {

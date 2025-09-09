@@ -16,6 +16,7 @@ class UserStatusModel {
     return data;
   }
 }
+
 List userData = [
   {
     "image": "https://randomuser.me/api/portraits/men/11.jpg",
