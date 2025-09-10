@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:facebook/home/home_screen.dart';
 import 'package:facebook/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplaceScreen extends StatefulWidget {
   const SplaceScreen({super.key});
@@ -18,6 +20,22 @@ class _SplaceScreenState extends State<SplaceScreen> {
     Timer(Duration(seconds: 3), () {
       _navigateTOFirst();
     });
+  }
+  _navigateTOFirst() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isLogin = prefs.getBool("login") ?? false;
+
+    if (isLogin) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    }
   }
 
   @override
@@ -42,10 +60,10 @@ class _SplaceScreenState extends State<SplaceScreen> {
     );
   }
 
-  _navigateTOFirst() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-  }
+  // _navigateTOFirst() {
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => LoginScreen()),
+  //   );
+  // }
 }

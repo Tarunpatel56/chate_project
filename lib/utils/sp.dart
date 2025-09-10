@@ -10,6 +10,7 @@ class SPref {
 
     var userData = jsonEncode(data.toJson());
     prefs.setString("user", userData);
+    prefs.setBool("login", true);
   }
 
   Future<UserModel> getUserData() async {
