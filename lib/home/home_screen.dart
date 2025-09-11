@@ -33,16 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   loadData() async {
-  
-      userModel =  await SPref().getUserData();
+    userModel = await SPref().getUserData();
     for (var msg in Dummychat) {
       chatMessageList.add(ChatUserModel.fromJson(msg));
     }
     isLoading = false;
     setState(() {});
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: userData.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
-                 
                   final user = userData[index];
                   return InkWell(
                     onTap: () {},
@@ -139,6 +135,25 @@ class _HomeScreenState extends State<HomeScreen> {
         data.message ?? '',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+      ),
+      trailing: PopupMenuButton(
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              child: Row(
+                children: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                  Text("Edit")
+                ],
+              ),
+            ),
+            PopupMenuItem(child: Row(
+              children: [
+                TextButton.icon(onPressed: (){},icon: Icon(Icons.delete), label: Text("delete"))
+              ],
+            ))
+          ];
+        },
       ),
     );
   }
