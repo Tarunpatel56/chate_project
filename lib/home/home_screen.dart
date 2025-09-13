@@ -5,6 +5,7 @@ import 'package:facebook/home/chat_screen.dart';
 import 'package:facebook/models/chat_user_model.dart';
 import 'package:facebook/models/user_model.dart';
 import 'package:facebook/models/user_status_model.dart';
+import 'package:facebook/profile/profile.dart';
 import 'package:facebook/utils/sp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,18 +48,26 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            radius: 35,
-            backgroundImage: NetworkImage(userModel!.image),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            },
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: NetworkImage(userModel!.image),
+            ),
           ),
         ),
 
         title: Text(userModel!.name, style: TextStyle(fontSize: 30)),
 
-        actions: [
-          IconButton(icon: Icon(Icons.camera_alt), onPressed: () {}),
-          IconButton(icon: Icon(Icons.edit_document), onPressed: () {}),
-        ],
+        actions: [IconButton(icon: Icon(Icons.camera_alt), onPressed: () {     Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen(),),
+              );})],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -140,18 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context) {
           return [
             PopupMenuItem(
-              child: Row(
-                children: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                  Text("Edit")
-                ],
-              ),
+              child: Row(children: [Icon(Icons.edit), Text("Edit")]),
             ),
-            PopupMenuItem(child: Row(
-              children: [
-                TextButton.icon(onPressed: (){},icon: Icon(Icons.delete), label: Text("delete"))
-              ],
-            ))
+            PopupMenuItem(
+              child: Row(children: [Icon(Icons.delete), Text("delete")]),
+            ),
           ];
         },
       ),
