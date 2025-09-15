@@ -21,6 +21,8 @@ class UserModel {
     );
   }
 
+  get uid => null;
+
   // Convert Dart object → JSON
   Map<String, dynamic> toJson() {
     return {

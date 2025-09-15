@@ -41,6 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
     isLoading = false;
     setState(() {});
   }
+   deleteData(String docId, String messageUid, dynamic _firestore) async {
+  if (userModel!.uid == messageUid) {
+    await _firestore.collection("dummy").doc(docId).delete();
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("You can only delete your own post")),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -146,11 +155,14 @@ class _HomeScreenState extends State<HomeScreen> {
         overflow: TextOverflow.ellipsis,
       ),
       trailing: PopupMenuButton(
+          onSelected: (value) {
+                switch (value) {
+                  case 0:
+                          deleteData(d);
+                  break;}},
         itemBuilder: (context) {
           return [
-            PopupMenuItem(
-              child: Row(children: [Icon(Icons.edit), Text("Edit")]),
-            ),
+          
             PopupMenuItem(
               child: Row(children: [Icon(Icons.delete), Text("delete")]),
             ),

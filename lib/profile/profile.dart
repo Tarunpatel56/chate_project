@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
-                    child: Text("Log out"),
+                    child: Text("Log out",style: TextStyle(fontSize: 18),),
                   ),
                 ],
               ),
