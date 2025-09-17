@@ -41,15 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
     isLoading = false;
     setState(() {});
   }
-   deleteData(String docId, String messageUid, dynamic _firestore) async {
-  if (userModel!.uid == messageUid) {
-    await _firestore.collection("dummy").doc(docId).delete();
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("You can only delete your own post")),
-    );
+
+  deleteData(String docId, String messageUid, dynamic _firestore) async {
+    if (userModel!.uid == messageUid) {
+      await _firestore.collection("dummy").doc(docId).delete();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("You can only delete your own post")),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +74,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
         title: Text(userModel!.name, style: TextStyle(fontSize: 30)),
 
-        actions: [IconButton(icon: Icon(Icons.camera_alt), onPressed: () {     Navigator.push(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.camera_alt),
+            onPressed: () {
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen(),),
-              );})],
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -155,15 +163,15 @@ class _HomeScreenState extends State<HomeScreen> {
         overflow: TextOverflow.ellipsis,
       ),
       trailing: PopupMenuButton(
-          onSelected: (value) {
-                switch (value) {
-                  case 0:
-                          deleteData(d);
-                  break;}},
+        onSelected: (value) {
+          setState(() {
+            chatMessageList.removeWhere((item) => item.message == value);
+          });
+        },
         itemBuilder: (context) {
           return [
-          
             PopupMenuItem(
+              value: data.message,
               child: Row(children: [Icon(Icons.delete), Text("delete")]),
             ),
           ];
