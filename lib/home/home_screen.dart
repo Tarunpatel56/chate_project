@@ -21,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+   bool _slowAnimations = false;
   File? image;
   bool isLoading = true;
   UserModel? userModel;
@@ -143,14 +144,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _chatecard(ChatUserModel data) {
     return ListTile(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatScreen(user: data, user2: data),
-          ),
-        );
-      },
+ onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                          return ChatScreen(user: data, user2: data);
+                        },
+                      ),
+                    );
+ },
+
       leading: CircleAvatar(backgroundImage: NetworkImage(data.image ?? '')),
       title: Text(
         data.name ?? '',
